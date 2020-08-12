@@ -6,7 +6,7 @@ pipeline {
         stash(name: 'code', excludes: '.git/')
       }
     }
-
+ 
     stage('Build/Test App') {
       parallel {
         stage('Build App') {

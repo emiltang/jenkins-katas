@@ -16,8 +16,10 @@ pipeline {
             }
 
           }
+          options {
+            skipDefaultCheckout(true)
+          }
           steps {
-            skipDefaultCheckout true
             unstash 'code'
             sh 'sh ci/build-app.sh'
             archiveArtifacts 'app/build/libs/'
@@ -45,13 +47,19 @@ pipeline {
       environment {
         DOCKER = credentials('docker')
       }
+      options {
+        skipDefaultCheckout(true)
+      }
       steps {
         unstash 'code'
         sh 'ci/build-docker.sh'
-        sh 'echo "$DOCKERCREDS_PSW" | docker login -u "$DOCKERCREDS_USR" --password-stdin'
+        sh 'echo "$DOCKER_PSW" | docker login -u "$DOCKER_USR" --password-stdin'
         sh 'ci/push-docker.sh'
       }
     }
 
+  }
+  environment {
+    docker_username = 'emiltang'
   }
 }

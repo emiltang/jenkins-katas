@@ -73,7 +73,7 @@ pipeline {
         beforeAgent true
         expression {
           BRANCH_NAME == ~ /dev\/*/
-        }
+         }
 
       }
       steps {

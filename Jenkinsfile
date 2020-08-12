@@ -41,6 +41,7 @@ pipeline {
     }
 
     stage('Push Docker') {
+      when { branch "master" }
       environment {
         DOCKER = credentials('docker')
       }

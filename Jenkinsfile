@@ -41,7 +41,10 @@ pipeline {
     }
 
     stage('Push Docker') {
-      when { branch 'master' }
+      when {                 
+        beforeAgent true
+      branch 'master' 
+      }
       environment {
         DOCKER = credentials('docker')
       }
@@ -56,7 +59,10 @@ pipeline {
       }
     }
     stage('Component Test') {
- when {            expression { BRANCH_NAME == ~ /dev\/*/ }}
+ when {  
+                   beforeAgent true
+                             expression { BRANCH_NAME == ~ /dev\/*/ }
+                             }
           agent {
             docker {
               image 'gradle:jdk11'

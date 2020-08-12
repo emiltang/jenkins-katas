@@ -40,5 +40,17 @@ pipeline {
       }
     }
 
+    stage('Push Docker') {
+      environment {
+        DOCKER = credentials('docker')
+      }
+      steps {
+        unstash 'code'
+        sh 'ci/build-docker.sh'
+        sh 'echo "$DOCKERCREDS_PSW" | docker login -u "$DOCKERCREDS_USR" --password-stdin'
+        sh 'ci/push-docker.sh'
+      }
+    }
+
   }
 }

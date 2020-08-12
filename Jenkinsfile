@@ -6,7 +6,7 @@ pipeline {
         stash(name: 'code', excludes: '.git/')
       }
     }
- 
+
     stage('Build/Test App') {
       parallel {
         stage('Build App') {
@@ -41,7 +41,7 @@ pipeline {
     }
 
     stage('Push Docker') {
-      when { branch "master" }
+      when { branch 'master' }
       environment {
         DOCKER = credentials('docker')
       }
@@ -54,6 +54,18 @@ pipeline {
         sh 'echo "$DOCKER_PSW" | docker login -u "$DOCKER_USR" --password-stdin'
         sh 'ci/push-docker.sh'
       }
+    }
+    stage('Component Test') {
+ when { !(branch pattern: "dev/*", comparator: "REGEXP")}
+          agent {
+            docker {
+              image 'gradle:jdk11'
+            }
+          }
+          steps {
+            sh 'sh ci/component-test.sh'
+            junit 'app/build/test-results/test/TEST-*.xml'
+          }
     }
   }
   environment {

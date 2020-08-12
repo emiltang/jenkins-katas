@@ -30,7 +30,7 @@ pipeline {
 
           }
           steps {
-            sh 'sh ci/test-app.sh'
+            sh 'sh ci/unit-test-app.sh'
             junit 'app/build/test-results/test/TEST-*.xml'
           }
         }

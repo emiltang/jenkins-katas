@@ -56,7 +56,7 @@ pipeline {
       }
     }
     stage('Component Test') {
- when { !(branch pattern: "dev/*", comparator: "REGEXP")}
+ when {            expression { BRANCH_NAME == ~ /dev\/*/ }}
           agent {
             docker {
               image 'gradle:jdk11'

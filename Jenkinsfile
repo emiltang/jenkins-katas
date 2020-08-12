@@ -14,6 +14,7 @@ pipeline {
             docker {
               image 'gradle:jdk11'
             }
+
           }
           options {
             skipDefaultCheckout(true)
@@ -31,19 +32,21 @@ pipeline {
             docker {
               image 'gradle:jdk11'
             }
+
           }
           steps {
             sh 'sh ci/unit-test-app.sh'
             junit 'app/build/test-results/test/TEST-*.xml'
           }
         }
+
       }
     }
 
     stage('Push Docker') {
-      when {                 
+      when {
         beforeAgent true
-      branch 'master' 
+        branch 'master'
       }
       environment {
         DOCKER = credentials('docker')
@@ -58,21 +61,27 @@ pipeline {
         sh 'ci/push-docker.sh'
       }
     }
+
     stage('Component Test') {
- when {  
-                   beforeAgent true
-                             expression { BRANCH_NAME == ~ /dev\/*/ }
-                             }
-          agent {
-            docker {
-              image 'gradle:jdk11'
-            }
-          }
-          steps {
-            sh 'sh ci/component-test.sh'
-            junit 'app/build/test-results/test/TEST-*.xml'
-          }
+      agent {
+        docker {
+          image 'gradle:jdk11'
+        }
+
+      }
+      when {
+        beforeAgent true
+        expression {
+          BRANCH_NAME == ~ /dev\/*/
+        }
+
+      }
+      steps {
+        sh 'sh ci/component-test.sh'
+        junit 'app/build/test-results/test/TEST-*.xml'
+      }
     }
+
   }
   environment {
     docker_username = 'emiltang'

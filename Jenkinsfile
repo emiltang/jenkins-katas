@@ -14,7 +14,6 @@ pipeline {
             docker {
               image 'gradle:jdk11'
             }
-
           }
           options {
             skipDefaultCheckout(true)
@@ -32,14 +31,12 @@ pipeline {
             docker {
               image 'gradle:jdk11'
             }
-
           }
           steps {
             sh 'sh ci/unit-test-app.sh'
             junit 'app/build/test-results/test/TEST-*.xml'
           }
         }
-
       }
     }
 
@@ -57,7 +54,6 @@ pipeline {
         sh 'ci/push-docker.sh'
       }
     }
-
   }
   environment {
     docker_username = 'emiltang'

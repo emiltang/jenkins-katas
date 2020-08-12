@@ -7,7 +7,7 @@ pipeline {
       }
     }
 
-    stage('Build App') {
+    stage('Build/Test App') {
       parallel {
         stage('Build App') {
           agent {

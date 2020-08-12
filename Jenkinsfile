@@ -18,10 +18,11 @@ pipeline {
           }
           steps {
             sh 'sh ci/build-app.sh'
+            archiveArtifacts 'app/build/libs/'
           }
         }
 
-        stage('') {
+        stage('Arcive') {
           steps {
             archiveArtifacts 'app/build/libs/'
           }

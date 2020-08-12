@@ -8,26 +8,15 @@ pipeline {
     }
 
     stage('Build App') {
-      parallel {
-        stage('Build App') {
-          agent {
-            docker {
-              image 'gradle:jdk11'
-            }
-
-          }
-          steps {
-            sh 'sh ci/build-app.sh'
-            archiveArtifacts 'app/build/libs/'
-          }
+      agent {
+        docker {
+          image 'gradle:jdk11'
         }
 
-        stage('Arcive') {
-          steps {
-            archiveArtifacts 'app/build/libs/'
-          }
-        }
-
+      }
+      steps {
+        sh 'sh ci/build-app.sh'
+        archiveArtifacts 'app/build/libs/'
       }
     }
 

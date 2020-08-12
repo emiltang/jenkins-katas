@@ -23,6 +23,12 @@ pipeline {
         }
 
         stage('Test App') {
+          agent {
+            docker {
+              image 'gradle:jdk11'
+            }
+
+          }
           steps {
             sh 'sh ci/test-app.sh'
             junit 'app/build/test-results/test/TEST-*.xml'

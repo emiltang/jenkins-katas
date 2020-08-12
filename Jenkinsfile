@@ -7,5 +7,19 @@ pipeline {
       }
     }
 
+    stage('Build App') {
+      agent {
+        docker {
+          image 'gradle:jdk11'
+        }
+
+      }
+      steps {
+        sh '''cd ci
+
+&& ./build-app.sh'''
+      }
+    }
+
   }
 }
